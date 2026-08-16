@@ -6,6 +6,7 @@ class Settings(BaseSettings):
 
     database_url: str
     app_name: str = "CargoPeer"
+    secret_key: str = "change-me"
 
 
 settings = Settings()
