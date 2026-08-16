@@ -23,3 +23,24 @@ class UserOut(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+class ItemCreate(BaseModel):
+    title: str
+    description: str = ""
+    pickup_location: str
+    delivery_location: str
+    reward: int = 0
+
+
+class ItemOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    owner_id: int
+    title: str
+    description: str
+    pickup_location: str
+    delivery_location: str
+    reward: int
+    status: str
