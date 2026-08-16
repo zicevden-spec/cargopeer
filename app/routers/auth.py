@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_session
+from app.deps import get_current_user
 from app.models import User
 from app.schemas import Token, UserCreate, UserLogin, UserOut
 from app.security import create_access_token, hash_password, verify_password
@@ -34,3 +35,8 @@ async def login(data: UserLogin, session: AsyncSession = Depends(get_session)):
     if user is None or not verify_password(data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     return Token(access_token=create_access_token(user.id))
+
+
+@router.get("/me", response_model=UserOut)
+async def me(user: User = Depends(get_current_user)):
+    return user
