@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -34,3 +34,12 @@ async def create_item(
 async def list_items(session: AsyncSession = Depends(get_session)):
     result = await session.execute(select(Item).order_by(Item.created_at.desc()))
     return result.scalars().all()
+
+
+@router.get("/{item_id}", response_model=ItemOut)
+async def get_item(item_id: int, session: AsyncSession = Depends(get_session)):
+    result = await session.execute(select(Item).where(Item.id == item_id))
+    item = result.scalar_one_or_none()
+    if item is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return item
