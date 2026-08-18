@@ -11,32 +11,19 @@
 - [x] Защищённый эндпоинт GET /auth/me (проверка токена)
 - [x] Модель Item + миграция (товар на полке)
 - [x] Эндпоинты полки: POST /items, GET /items, GET /items/{id}
+- [x] Модель Offer + миграция (предложения курьеров)
+- [x] Эндпоинты предложений: POST /items/{id}/offers, GET /items/{id}/offers
+- [x] Модель Request + миграция (заявки получателей)
+- [x] Эндпоинты заявок: POST /items/{id}/requests, GET /items/{id}/requests
 
-## В работе — предложения курьеров (Offer)
-**Что сделано:**
-- [x] Обновлена модель models.py (добавлен класс Offer с связями)
-- [x] Обновлена schemas.py (добавлены OfferCreate, OfferOut)
-- [x] Создан routers/offers.py (POST и GET для предложений)
-- [x] Обновлён main.py (подключён offers_router)
-- [x] Обновлён migrations/env.py (использует NullPool)
-- [x] Обновлён app/database.py (добавлены sslmode=require, connect_timeout=30)
-
-**Что осталось сделать:**
-- [ ] Разбудить базу Neon (зайти на console.neon.tech, нажать Resume)
-- [ ] Создать миграцию: uv run python -m alembic revision --autogenerate -m "add offers table"
-- [ ] Применить миграцию: uv run python -m alembic upgrade head
-- [ ] Протестировать в Swagger:
-  - Создать второго пользователя (курьера)
-  - Получить токен курьера через /auth/login
-  - Сделать POST /items/{item_id}/offers (предложение от курьера)
-  - Проверить GET /items/{id}/offers (список предложений)
-- [ ] Закоммитить: git add . ; git commit -m "feat: offers model and endpoints" ; git push
+## В работе
+- (пусто)
 
 ## Следующие шаги
-- [ ] Модель Request (заявка получателя) + миграция
-- [ ] Логика торгов (встречные предложения, статусы заказа)
+- [ ] Логика торгов (accept/reject для offer и request, статусы заказа)
 - [ ] Скрытая доставка (приватная ссылка + токен)
 - [ ] Уведомления
+- [ ] Увеличить SECRET_KEY до 32+ байт (убрать InsecureKeyLengthWarning)
 
 ## Стек
 - Python 3.12, FastAPI, SQLAlchemy (async), asyncpg, Alembic
@@ -51,6 +38,7 @@
 4. Секреты хранятся в .env (не коммитится), пароли в открытом виде нигде не храним
 
 ## Заметки
-- База Neon на бесплатном плане "засыпает" при неактивности
-- При первом запросе после простоя может быть ConnectionResetError — нужно подождать 30-60 секунд или разбудить через console.neon.tech
+- База Neon на бесплатном плане "засыпает" при неактивности — нужно разбудить через console.neon.tech или подождать 30-60 секунд
 - Добавили sslmode=require и connect_timeout=30 в database.py для стабильности
+- migrations/env.py использует NullPool и connectable.begin() для корректной работы с asyncpg
+- При работе через VPN база иногда "теряется" — это нормально, не критично для разработки
