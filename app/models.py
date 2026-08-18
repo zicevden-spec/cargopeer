@@ -21,6 +21,7 @@ class User(Base):
     )
 
     items: Mapped[list["Item"]] = relationship(back_populates="owner")
+    offers: Mapped[list["Offer"]] = relationship(back_populates="courier")
 
 
 class Item(Base):
@@ -40,3 +41,21 @@ class Item(Base):
     )
 
     owner: Mapped["User"] = relationship(back_populates="items")
+    offers: Mapped[list["Offer"]] = relationship(back_populates="item")
+
+
+class Offer(Base):
+    __tablename__ = "offers"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    item_id: Mapped[int] = mapped_column(ForeignKey("items.id"))
+    courier_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    price: Mapped[int] = mapped_column()
+    comment: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    item: Mapped["Item"] = relationship(back_populates="offers")
+    courier: Mapped["User"] = relationship(back_populates="offers")

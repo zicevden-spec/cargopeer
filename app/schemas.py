@@ -44,3 +44,18 @@ class ItemOut(BaseModel):
     delivery_location: str
     reward: int
     status: str
+
+
+class OfferCreate(BaseModel):
+    price: int
+    comment: str = ""
+
+
+class OfferOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    item_id: int
+    courier_id: int
+    price: int
+    comment: str
