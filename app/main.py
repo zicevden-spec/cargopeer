@@ -7,12 +7,14 @@ from app.database import get_session
 from app.routers.auth import router as auth_router
 from app.routers.items import router as items_router
 from app.routers.offers import router as offers_router
+from app.routers.requests import router as requests_router
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
 
 app.include_router(auth_router)
 app.include_router(items_router)
 app.include_router(offers_router)
+app.include_router(requests_router)
 
 
 @app.get("/health")

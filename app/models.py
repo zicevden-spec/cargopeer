@@ -22,6 +22,7 @@ class User(Base):
 
     items: Mapped[list["Item"]] = relationship(back_populates="owner")
     offers: Mapped[list["Offer"]] = relationship(back_populates="courier")
+    requests: Mapped[list["Request"]] = relationship(back_populates="requester")
 
 
 class Item(Base):
@@ -42,6 +43,7 @@ class Item(Base):
 
     owner: Mapped["User"] = relationship(back_populates="items")
     offers: Mapped[list["Offer"]] = relationship(back_populates="item")
+    requests: Mapped[list["Request"]] = relationship(back_populates="item")
 
 
 class Offer(Base):
@@ -59,3 +61,21 @@ class Offer(Base):
 
     item: Mapped["Item"] = relationship(back_populates="offers")
     courier: Mapped["User"] = relationship(back_populates="offers")
+
+
+class Request(Base):
+    __tablename__ = "requests"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    item_id: Mapped[int] = mapped_column(ForeignKey("items.id"))
+    requester_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    price: Mapped[int] = mapped_column()
+    comment: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(50), default="pending")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    item: Mapped["Item"] = relationship(back_populates="requests")
+    requester: Mapped["User"] = relationship(back_populates="requests")

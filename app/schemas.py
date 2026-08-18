@@ -59,3 +59,19 @@ class OfferOut(BaseModel):
     courier_id: int
     price: int
     comment: str
+
+
+class RequestCreate(BaseModel):
+    price: int
+    comment: str = ""
+
+
+class RequestOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    item_id: int
+    requester_id: int
+    price: int
+    comment: str
+    status: str
