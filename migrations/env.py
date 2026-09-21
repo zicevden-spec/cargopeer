@@ -37,7 +37,6 @@ def do_run_migrations(connection: Connection) -> None:
 async def run_async_migrations() -> None:
     connectable = create_async_engine(
         settings.database_url,
-        connect_args={"ssl": "require"},
         poolclass=pool.NullPool,
     )
 

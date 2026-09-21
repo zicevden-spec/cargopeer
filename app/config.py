@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import secrets
 
 
 class Settings(BaseSettings):
@@ -6,7 +7,7 @@ class Settings(BaseSettings):
 
     database_url: str
     app_name: str = "CargoPeer"
-    secret_key: str = "change-me"
+    secret_key: str = secrets.token_urlsafe(32)  # 32+ байт для безопасности
 
 
 settings = Settings()
