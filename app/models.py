@@ -35,7 +35,9 @@ class Item(Base):
     pickup_location: Mapped[str] = mapped_column(String(255))
     delivery_location: Mapped[str] = mapped_column(String(255))
     reward: Mapped[int] = mapped_column(default=0)
-    status: Mapped[str] = mapped_column(String(50), default="active")
+    status: Mapped[str] = mapped_column(String(50), default="active")  # active, in_progress, completed, cancelled
+    is_private: Mapped[bool] = mapped_column(default=False)  # скрытая доставка
+    private_token: Mapped[str | None] = mapped_column(String(255), nullable=True, default=None)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -54,6 +56,7 @@ class Offer(Base):
     courier_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     price: Mapped[int] = mapped_column()
     comment: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(50), default="pending")  # pending, accepted, rejected
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),

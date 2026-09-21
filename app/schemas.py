@@ -31,6 +31,7 @@ class ItemCreate(BaseModel):
     pickup_location: str
     delivery_location: str
     reward: int = 0
+    is_private: bool = False  # скрытая доставка
 
 
 class ItemOut(BaseModel):
@@ -44,6 +45,8 @@ class ItemOut(BaseModel):
     delivery_location: str
     reward: int
     status: str
+    is_private: bool
+    private_token: str | None = None
 
 
 class OfferCreate(BaseModel):
@@ -59,6 +62,17 @@ class OfferOut(BaseModel):
     courier_id: int
     price: int
     comment: str
+    status: str
+
+
+class OfferAccept(BaseModel):
+    """Схема для принятия предложения"""
+    pass
+
+
+class OfferReject(BaseModel):
+    """Схема для отклонения предложения"""
+    reason: str = ""
 
 
 class RequestCreate(BaseModel):
@@ -75,3 +89,13 @@ class RequestOut(BaseModel):
     price: int
     comment: str
     status: str
+
+
+class RequestAccept(BaseModel):
+    """Схема для принятия заявки"""
+    pass
+
+
+class RequestReject(BaseModel):
+    """Схема для отклонения заявки"""
+    reason: str = ""

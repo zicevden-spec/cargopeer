@@ -15,15 +15,20 @@
 - [x] Эндпоинты предложений: POST /items/{id}/offers, GET /items/{id}/offers
 - [x] Модель Request + миграция (заявки получателей)
 - [x] Эндпоинты заявок: POST /items/{id}/requests, GET /items/{id}/requests
+- [x] Логика торгов: accept/reject для offers (POST /items/{id}/offers/{offer_id}/accept|reject)
+- [x] Логика торгов: accept/reject для requests (POST /items/{id}/requests/{request_id}/accept|reject)
+- [x] Статусы для Offer (pending/accepted/rejected)
+- [x] Скрытая доставка: is_private + private_token для Items
+- [x] Эндпоинт для скрытых доставок: GET /items/private/{token}
+- [x] Увеличен SECRET_KEY до 32+ байт (secrets.token_urlsafe(32))
 
 ## В работе
 - (пусто)
 
 ## Следующие шаги
-- [ ] Логика торгов (accept/reject для offer и request, статусы заказа)
-- [ ] Скрытая доставка (приватная ссылка + токен)
-- [ ] Уведомления
-- [ ] Увеличить SECRET_KEY до 32+ байт (убрать InsecureKeyLengthWarning)
+- [ ] Уведомления (email/push при изменении статусов)
+- [ ] Статус completed/cancelled для Items
+- [ ] История заказов пользователя
 
 ## Стек
 - Python 3.12, FastAPI, SQLAlchemy (async), asyncpg, Alembic
@@ -39,6 +44,5 @@
 
 ## Заметки
 - База Neon на бесплатном плане "засыпает" при неактивности — нужно разбудить через console.neon.tech или подождать 30-60 секунд
-- Добавили sslmode=require и connect_timeout=30 в database.py для стабильности
-- migrations/env.py использует NullPool и connectable.begin() для корректной работы с asyncpg
 - При работе через VPN база иногда "теряется" — это нормально, не критично для разработки
+- Миграция a1b2c3d4e5f6 добавляет status в offers и is_private/private_token в items
